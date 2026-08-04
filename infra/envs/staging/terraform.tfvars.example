@@ -1,0 +1,7 @@
+# Copy this file to terraform.tfvars and fill in your own values.
+# terraform.tfvars is gitignored — never commit it if it ever contains anything sensitive.
+
+ssh_public_key_path = "~/.ssh/orbit_vm_key.pub"
+
+# Find your own public IP with: curl -s ifconfig.me
+ssh_allowed_cidrs = ["YOUR_PUBLIC_IP/32"]

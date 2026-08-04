@@ -1,0 +1,21 @@
+#cloud-config
+package_update: true
+package_upgrade: true
+packages:
+  - curl
+  - ca-certificates
+  - fail2ban
+
+write_files:
+  - path: /etc/rancher/k3s/config.yaml
+    permissions: '0600'
+    content: |
+      write-kubeconfig-mode: "0644"
+      node-name: "${node_name}"
+      tls-san:
+        - "${public_ip}"
+
+runcmd:
+  - curl -sfL https://get.k3s.io | INSTALL_K3S_VERSION="${k3s_version}" sh -
+  - systemctl enable --now fail2ban
+  - kubectl wait --for=condition=Ready node --all --timeout=180s
