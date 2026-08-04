@@ -1,0 +1,53 @@
+# --- Terraform ---
+**/.terraform/*
+*.tfstate
+*.tfstate.*
+*.tfvars
+!*.tfvars.example
+crash.log
+crash.*.log
+override.tf
+override.tf.json
+*_override.tf
+*_override.tf.json
+.terraformrc
+terraform.rc
+
+# --- Secrets, never ever ---
+*.pem
+*.key
+.env
+.env.*
+!.env.example
+**/secrets.yaml
+kubeconfig*
+
+# --- Java / Maven (interns-api) ---
+services/interns-api/target/
+services/interns-api/.mvn/
+services/interns-api/*.class
+services/interns-api/HELP.md
+
+# --- Python (tasks-api) ---
+services/tasks-api/__pycache__/
+services/tasks-api/*.pyc
+services/tasks-api/.venv/
+services/tasks-api/venv/
+services/tasks-api/.pytest_cache/
+services/tasks-api/*.egg-info/
+services/tasks-api/.coverage
+services/tasks-api/htmlcov/
+
+# --- Helm ---
+charts/**/charts/
+charts/**/*.tgz
+
+# --- IDE / OS ---
+.idea/
+.vscode/
+*.iml
+.DS_Store
+Thumbs.db
+
+# --- Docker ---
+*.env.local
