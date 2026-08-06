@@ -1,0 +1,70 @@
+version: '3.9'
+
+services:
+  postgres:
+    image: postgres:16-alpine
+    container_name: orbit-postgres
+    environment:
+      POSTGRES_DB: orbit
+      POSTGRES_USER: orbit
+      POSTGRES_PASSWORD: orbit
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U orbit"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  interns-api:
+    build:
+      context: ./services/interns-api
+      dockerfile: Dockerfile
+    container_name: orbit-interns-api
+    environment:
+      SERVER_PORT: 8080
+      DB_HOST: postgres
+      DB_PORT: 5432
+      DB_NAME: orbit
+      DB_USER: orbit
+      DB_PASSWORD: orbit
+      TASKS_API_URL: http://tasks-api:8000
+    ports:
+      - "8080:8080"
+    depends_on:
+      postgres:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8080/actuator/health"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  tasks-api:
+    build:
+      context: ./services/tasks-api
+      dockerfile: Dockerfile
+    container_name: orbit-tasks-api
+    environment:
+      SERVER_PORT: 8000
+      DB_HOST: postgres
+      DB_PORT: 5432
+      DB_NAME: orbit
+      DB_USER: orbit
+      DB_PASSWORD: orbit
+      INTERNS_API_URL: http://interns-api:8080
+    ports:
+      - "8000:8000"
+    depends_on:
+      postgres:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/health"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+volumes:
+  postgres_data:
