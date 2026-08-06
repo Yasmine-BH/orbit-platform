@@ -15,7 +15,7 @@ class Task(SQLModel, table=True):
     __tablename__ = "tasks"
 
     id: int | None = Field(default=None, primary_key=True)
-    intern_id: int = Field(foreign_key="interns.id", index=True)
+    intern_id: int = Field(index=True)  # No foreign key — just an integer
     title: str = Field(index=True)
     priority: str  # LOW, MEDIUM, HIGH
     status: TaskStatus = Field(default=TaskStatus.PENDING)
