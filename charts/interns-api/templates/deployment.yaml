@@ -1,0 +1,64 @@
+﻿apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Release.Name }}
+  namespace: {{ .Release.Namespace }}
+spec:
+  replicas: {{ .Values.replicaCount }}
+  selector:
+    matchLabels:
+      app: {{ .Release.Name }}
+  template:
+    metadata:
+      labels:
+        app: {{ .Release.Name }}
+    spec:
+      containers:
+      - name: {{ .Release.Name }}
+        image: {{ .Values.image.repository }}:{{ .Values.image.tag }}
+        imagePullPolicy: {{ .Values.image.pullPolicy }}
+        ports:
+        - containerPort: {{ .Values.service.targetPort }}
+        env:
+        - name: SERVER_PORT
+          value: "{{ .Values.config.serverPort }}"
+        - name: DB_HOST
+          value: "{{ .Values.database.host }}"
+        - name: DB_PORT
+          value: "{{ .Values.database.port }}"
+        - name: DB_NAME
+          value: "{{ .Values.database.name }}"
+        - name: DB_USER
+          value: "{{ .Values.database.user }}"
+        - name: DB_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: db-credentials
+              key: password
+        - name: JPA_SHOW_SQL
+          value: "{{ .Values.config.jpaShowSql }}"
+        - name: JPA_DDL_AUTO
+          value: "{{ .Values.config.jpaDdlAuto }}"
+        {{- if .Values.livenessProbe.enabled }}
+        livenessProbe:
+          httpGet:
+            path: {{ .Values.livenessProbe.path }}
+            port: {{ .Values.service.targetPort }}
+          initialDelaySeconds: {{ .Values.livenessProbe.initialDelaySeconds }}
+          periodSeconds: {{ .Values.livenessProbe.periodSeconds }}
+        {{- end }}
+        {{- if .Values.readinessProbe.enabled }}
+        readinessProbe:
+          httpGet:
+            path: {{ .Values.readinessProbe.path }}
+            port: {{ .Values.service.targetPort }}
+          initialDelaySeconds: {{ .Values.readinessProbe.initialDelaySeconds }}
+          periodSeconds: {{ .Values.readinessProbe.periodSeconds }}
+        {{- end }}
+        resources:
+          limits:
+            cpu: {{ .Values.resources.limits.cpu }}
+            memory: {{ .Values.resources.limits.memory }}
+          requests:
+            cpu: {{ .Values.resources.requests.cpu }}
+            memory: {{ .Values.resources.requests.memory }}

@@ -1,0 +1,42 @@
+﻿replicaCount: 1
+
+image:
+  repository: orbit-platform-interns-api
+  pullPolicy: IfNotPresent
+  tag: "latest"
+
+service:
+  type: ClusterIP
+  port: 8080
+  targetPort: 8080
+
+config:
+  serverPort: "8080"
+  jpaShowSql: "false"
+  jpaDdlAuto: "update"
+
+database:
+  host: postgresql
+  port: 5432
+  name: orbit
+  user: orbit
+
+resources:
+  limits:
+    cpu: 500m
+    memory: 512Mi
+  requests:
+    cpu: 100m
+    memory: 256Mi
+
+livenessProbe:
+  enabled: true
+  path: /actuator/health
+  initialDelaySeconds: 30
+  periodSeconds: 10
+
+readinessProbe:
+  enabled: true
+  path: /actuator/health
+  initialDelaySeconds: 10
+  periodSeconds: 5

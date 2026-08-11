@@ -1,0 +1,43 @@
+﻿replicaCount: 1
+
+image:
+  repository: orbit-platform-tasks-api
+  pullPolicy: IfNotPresent
+  tag: "latest"
+
+service:
+  type: ClusterIP
+  port: 8000
+  targetPort: 8000
+
+config:
+  serverPort: "8000"
+
+database:
+  host: postgresql
+  port: 5432
+  name: orbit
+  user: orbit
+
+internsApi:
+  url: "http://interns-api:8080"
+
+resources:
+  limits:
+    cpu: 500m
+    memory: 512Mi
+  requests:
+    cpu: 100m
+    memory: 256Mi
+
+livenessProbe:
+  enabled: true
+  path: /health
+  initialDelaySeconds: 30
+  periodSeconds: 10
+
+readinessProbe:
+  enabled: true
+  path: /health
+  initialDelaySeconds: 10
+  periodSeconds: 5

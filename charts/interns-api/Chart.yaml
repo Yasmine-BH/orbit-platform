@@ -1,0 +1,9 @@
+﻿apiVersion: v2
+name: interns-api
+description: Spring Boot microservice for managing interns
+type: application
+version: 0.1.0
+appVersion: "0.1.0"
+maintainers:
+  - name: Yasmine Ben Hamada
+    email: yasmine@example.com
