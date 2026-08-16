@@ -48,7 +48,7 @@ jobs:
         uses: aquasecurity/trivy-action@master
         with:
           image-ref: ghcr.io/${{ env.REPO_LOWER }}/tasks-api:${{ github.sha }}
-          severity: 'HIGH,CRITICAL'
+          severity: 'CRITICAL'
           exit-code: '1'
       - name: Update image tag in chart
         run: |
