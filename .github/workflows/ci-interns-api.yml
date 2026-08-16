@@ -36,10 +36,10 @@ jobs:
         with:
           context: services/interns-api
           push: true
-          tags: ghcr.io/${{ github.repository }}/interns-api:${{ github.sha }}
+          tags: ghcr.io/${{ github.repository | lower }}/interns-api:${{ github.sha }}
       - name: Scan image
         uses: aquasecurity/trivy-action@master
         with:
-          image-ref: ghcr.io/${{ github.repository }}/interns-api:${{ github.sha }}
+          image-ref: ghcr.io/${{ github.repository | lower }}/interns-api:${{ github.sha }}
           severity: 'HIGH,CRITICAL'
           exit-code: '1'
