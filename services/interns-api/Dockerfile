@@ -10,10 +10,10 @@ COPY src ./src
 RUN mvn -B clean package -DskipTests
 
 # ---- runtime stage ----
-FROM eclipse-temurin:21-jre-alpine
+FROM eclipse-temurin:21-jre-latest
 RUN addgroup -S spring && adduser -S spring -G spring
 WORKDIR /app
-COPY --from=build /build/target/app.jar app.jar
+COPY --from=build /build/target/*.jar app.jar
 RUN chown spring:spring app.jar
 USER spring
 EXPOSE 8080
