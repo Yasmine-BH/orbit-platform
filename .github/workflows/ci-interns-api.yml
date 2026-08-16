@@ -17,7 +17,7 @@ jobs:
           distribution: 'temurin'
       - run: mvn test
         working-directory: services/interns-api
-  
+
   build:
     needs: test
     if: github.ref == 'refs/heads/main'
@@ -27,6 +27,8 @@ jobs:
       packages: write
     steps:
       - uses: actions/checkout@v4
+      - name: Convert repo to lowercase
+        run: echo "REPO_LOWER=$(echo ${{ github.repository }} | tr '[:upper:]' '[:lower:]')" >> $GITHUB_ENV
       - uses: docker/login-action@v3
         with:
           registry: ghcr.io
@@ -36,10 +38,10 @@ jobs:
         with:
           context: services/interns-api
           push: true
-          tags: ghcr.io/${{ github.repository | lower }}/interns-api:${{ github.sha }}
+          tags: ghcr.io/${{ env.REPO_LOWER }}/interns-api:${{ github.sha }}
       - name: Scan image
         uses: aquasecurity/trivy-action@master
         with:
-          image-ref: ghcr.io/${{ github.repository | lower }}/interns-api:${{ github.sha }}
+          image-ref: ghcr.io/${{ env.REPO_LOWER }}/interns-api:${{ github.sha }}
           severity: 'HIGH,CRITICAL'
           exit-code: '1'
