@@ -9,7 +9,7 @@ ENV PATH="/opt/venv/bin:$PATH"
 RUN pip install --no-cache-dir -r requirements.txt
 
 # ---- runtime stage ----
-FROM python:3.12-alpine
+FROM python:3.12-slim
 ENV PYTHONDONTWRITEBYTECODE=1 \
     PYTHONUNBUFFERED=1 \
     PATH="/opt/venv/bin:$PATH"
@@ -24,7 +24,7 @@ COPY app ./app
 COPY pytest.ini .
 
 # Create non-root user
-RUN addgroup -S appuser && adduser -S appuser -G appuser
+RUN groupadd --system appuser && useradd --system --gid appuser appuser
 USER appuser
 
 EXPOSE 8000
