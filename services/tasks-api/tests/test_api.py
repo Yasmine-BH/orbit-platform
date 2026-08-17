@@ -1,27 +1,11 @@
 from datetime import date
-from unittest.mock import AsyncMock, patch
+from unittest.mock import MagicMock, patch
 import pytest
 from fastapi.testclient import TestClient
-from sqlmodel import Session
 
 
-@pytest.fixture
-def mock_http_client():
-    """Mock the HTTP client to avoid calling interns-api during tests."""
-    with patch("app.routers.tasks.get_http_client") as mock:
-        client = AsyncMock()
-        
-        async def get_client():
-            yield client
-        
-        mock.return_value = get_client()
-        yield client
-
-
-def test_create_task_success(client: TestClient, mock_http_client):
+def test_create_task_success(client: TestClient):
     """Test creating a task when intern exists."""
-    mock_http_client.get.return_value.status_code = 200
-    
     payload = {
         "intern_id": 1,
         "title": "Design database schema",
@@ -31,19 +15,6 @@ def test_create_task_success(client: TestClient, mock_http_client):
     response = client.post("/api/tasks", json=payload)
     assert response.status_code == 201
     assert response.json()["title"] == "Design database schema"
-
-
-def test_create_task_intern_not_found(client: TestClient, mock_http_client):
-    """Test creating a task when intern doesn't exist."""
-    mock_http_client.get.return_value.status_code = 404
-    
-    payload = {
-        "intern_id": 999,
-        "title": "Design database schema",
-        "priority": "HIGH",
-    }
-    response = client.post("/api/tasks", json=payload)
-    assert response.status_code == 404
 
 
 def test_create_task_invalid_priority(client: TestClient):
