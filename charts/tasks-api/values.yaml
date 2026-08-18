@@ -3,7 +3,7 @@
 image:
   repository: orbit-platform-tasks-api
   pullPolicy: IfNotPresent
-  tag: "6cfe7b75d9ffa5f33a8093102d5a5c9bd580436d"
+  tag: "16e01577a63c8fb1951a2d39cfc18c44f8a387a3"
 
 service:
   type: ClusterIP
