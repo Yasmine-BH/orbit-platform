@@ -1,0 +1,16 @@
+apiVersion: argoproj.io/v1alpha1
+kind: AppProject
+metadata:
+  name: orbit
+  namespace: argocd
+spec:
+  description: ORBIT platform applications
+
+  sourceRepos:
+    - https://github.com/Yasmine-BH/orbit-platform.git
+
+  destinations:
+    - server: https://kubernetes.default.svc
+      namespace: orbit
+
+  clusterResourceWhitelist: []

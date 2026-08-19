@@ -1,7 +1,7 @@
 ﻿replicaCount: 1
 
 image:
-  repository: orbit-platform-tasks-api
+  repository: ghcr.io/yasmine-bh/orbit-platform/tasks-api
   pullPolicy: IfNotPresent
   tag: "16e01577a63c8fb1951a2d39cfc18c44f8a387a3"
 

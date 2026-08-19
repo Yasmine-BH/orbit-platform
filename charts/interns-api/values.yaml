@@ -1,7 +1,7 @@
 ﻿replicaCount: 1
 
 image:
-  repository: orbit-platform-interns-api
+  repository: ghcr.io/yasmine-bh/orbit-platform/interns-api
   pullPolicy: IfNotPresent
   tag: "latest"
 
