@@ -20,6 +20,7 @@ database:
   port: 5432
   name: orbit
   user: orbit
+  existingSecret: db-credentials
 
 resources:
   limits:
@@ -40,3 +41,19 @@ readinessProbe:
   path: /actuator/health
   initialDelaySeconds: 10
   periodSeconds: 5
+
+configMap:
+  enabled: true
+
+ingress:
+  enabled: true
+  className: traefik
+  host: interns.orbit.local
+  path: /api/interns
+
+ingress:
+  enabled: true
+  className: traefik
+  host: interns.orbit.local
+  path: /api/interns
+  pathType: Prefix
