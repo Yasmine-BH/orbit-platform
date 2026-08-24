@@ -26,6 +26,5 @@ helm.sh/chart: {{ .Chart.Name }}-{{ .Chart.Version | replace "+" "_" }}
 Selector labels.
 */}}
 {{- define "tasks-api.selectorLabels" -}}
-app.kubernetes.io/name: {{ include "tasks-api.name" . }}
-app.kubernetes.io/instance: {{ .Release.Name }}
+app: {{ .Release.Name }}
 {{- end }}
