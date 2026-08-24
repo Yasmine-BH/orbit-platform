@@ -18,6 +18,7 @@ database:
   port: 5432
   name: orbit
   user: orbit
+  existingSecret: db-credentials
 
 internsApi:
   url: "http://interns-api:8080"
@@ -41,3 +42,19 @@ readinessProbe:
   path: /health
   initialDelaySeconds: 10
   periodSeconds: 5
+
+configMap:
+  enabled: true
+
+ingress:
+  enabled: true
+  className: traefik
+  host: tasks.orbit.local
+  path: /api/tasks
+
+ingress:
+  enabled: true
+  className: traefik
+  host: tasks.orbit.local
+  path: /api/tasks
+  pathType: Prefix
