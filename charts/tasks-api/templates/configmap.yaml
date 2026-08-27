@@ -2,7 +2,7 @@
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: {{ include "tasks-api.fullname" . }}-config
+  name: {{ .Release.Name }}-config
   namespace: {{ .Release.Namespace }}
   labels:
     {{- include "tasks-api.labels" . | nindent 4 }}
