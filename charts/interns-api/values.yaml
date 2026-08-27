@@ -3,7 +3,7 @@
 image:
   repository: ghcr.io/yasmine-bh/orbit-platform/interns-api
   pullPolicy: IfNotPresent
-  tag: "91f8d5a4bb415b06ebbcb9c1a608b97d8832fc8f"
+  tag: "d767155f5ab90d2e930260a51ecc7b1fdc2c18ea"
 
 service:
   type: ClusterIP
