@@ -24,7 +24,6 @@ An **orbit** is a system that keeps returning to the same path without anyone st
 10. [Deployment](#deployment)
 11. [GitOps & Automation](#gitops--automation)
 12. [Troubleshooting](#troubleshooting)
-13. [Learning Path](#learning-path)
 
 ---
 
@@ -56,7 +55,6 @@ orbit-platform/
 │   │   ├── src/test/java/            # JUnit 5 tests
 │   │   ├── Dockerfile                # Multi-stage container build
 │   │   ├── pom.xml                   # Maven dependencies
-│   │   └── README.md
 │   │
 │   └── tasks-api/                     # Python/FastAPI REST API
 │       ├── app/                       # Application source
@@ -64,7 +62,6 @@ orbit-platform/
 │       ├── Dockerfile                # Optimised Python image
 │       ├── requirements.txt           # Dependencies
 │       ├── requirements-dev.txt       # Dev dependencies
-│       └── README.md
 │
 ├── charts/                            # Kubernetes deployment configuration (Helm)
 │   ├── interns-api/
@@ -88,7 +85,6 @@ orbit-platform/
 │   ├── tasks-api-deployment.yaml
 │   ├── tasks-api-service.yaml
 │   ├── postgres-*.yaml               # Database manifests
-│   └── README.md
 │
 ├── argocd/                            # GitOps declarations
 │   ├── project.yaml                  # AppProject (least privilege)
@@ -104,8 +100,7 @@ orbit-platform/
 ├── .env.example                      # Environment template
 ├── .gitignore                        # Git exclusions
 ├── README.md                         # This file
-└── LICENSE
-```
+
 
 ---
 
@@ -399,7 +394,7 @@ kubectl port-forward -n orbit svc/interns-api 8080:8080
 
 ### Phase 3: Infrastructure as Code ⏭️
 
-**Skipped per your request**, but available in `infra/` if needed:
+**Skipped per request**, but available in `infra/` if needed:
 - Terraform module that creates an Azure VM
 - cloud-init script that installs k3s on first boot
 - All infrastructure as declarative code
@@ -822,58 +817,7 @@ k3d cluster delete orbit
 # Start fresh
 docker compose up
 ```
-
 ---
-
-## Learning Path
-
-If you're new to DevOps, here's the recommended order:
-
-1. **Docker** (1-2 days)
-   - Understand how containers work
-   - Look at the Dockerfiles, understand each line
-   - Build and run them manually
-   - Read: https://docs.docker.com/build/building/best-practices
-
-2. **Docker Compose** (1 day)
-   - Run `docker compose up`
-   - Edit `docker-compose.yml`, understand what each field does
-   - Stop and start individual services
-   - Use `docker compose logs` to debug
-
-3. **Kubernetes basics** (2-3 days)
-   - Install k3d locally
-   - Read the raw YAML in `k8s/` — understand each Kubernetes object
-   - Learn: Pod, Deployment, Service, ConfigMap, Secret, Ingress
-   - Deploy manually with `kubectl apply -f`
-   - Use `kubectl logs`, `kubectl describe`, `kubectl exec`
-   - Read: https://kubernetes.io/docs/tutorials/kubernetes-basics
-
-4. **Helm** (1-2 days)
-   - Look at charts in `charts/`
-   - Run `helm template` to see what's generated
-   - Understand `values.yaml` — how values are overridden
-   - Deploy using Helm: `helm install`, `helm upgrade`
-   - Read: https://helm.sh/docs/chart_template_guide
-
-5. **GitOps & ArgoCD** (1-2 days)
-   - Install ArgoCD on your cluster
-   - Create an Application manifest
-   - Change Git, watch it sync automatically
-   - Try the demos (scale, delete, revert)
-   - Read: https://argo-cd.readthedocs.io/en/stable/getting_started
-
-6. **CI/CD with GitHub Actions** (1-2 days)
-   - Look at `.github/workflows/`
-   - Understand each job: test, build, scan, update
-   - Trigger a workflow by pushing code
-   - Watch the pipeline run
-   - Read: https://docs.github.com/actions
-
-**Total:** 1-2 weeks to understand the whole system end-to-end.
-
----
-
 ## Key Concepts
 
 ### Configuration from Environment
@@ -918,29 +862,6 @@ Running `helm upgrade` or `terraform apply` twice should have the same result as
 
 ---
 
-## Common Questions
-
-**Q: Why two services? Isn't this overkill?**
-
-A: The applications are intentionally small. The point is the infrastructure around them — containerization, orchestration, GitOps. If the apps were complex, you'd spend the whole project on features instead of learning DevOps.
-
-**Q: Can I use this as a template for my project?**
-
-A: Yes. The structure works for any microservices. Replace the Spring Boot and FastAPI services with your own code, update the Helm values, and the rest (Dockerfile, K8s, ArgoCD, GitHub Actions) all work the same.
-
-**Q: What if I don't want to use Kubernetes?**
-
-A: Stop after Phase 1. Docker Compose is perfectly fine for many projects. Kubernetes is overkill unless you need clustering, auto-scaling, or multi-region deployment.
-
-**Q: How do I add a third service?**
-
-A: Copy `services/tasks-api/` to `services/new-api/`, update the source. Copy `charts/tasks-api/` to `charts/new-api/`, update the values. Copy `.github/workflows/ci-tasks-api.yml` to `ci-new-api.yml`, update the paths. Create `argocd/new-api.yaml`. Git push — ArgoCD does the rest.
-
-**Q: What about monitoring and logging?**
-
-A: Out of scope for this project. Good next steps: add Prometheus for metrics, ELK/Loki for logs. The FastAPI service already logs in JSON (parse-friendly) — that's a start.
-
----
 
 ## Contributing
 
