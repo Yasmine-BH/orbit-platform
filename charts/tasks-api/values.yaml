@@ -3,7 +3,7 @@
 image:
   repository: ghcr.io/yasmine-bh/orbit-platform/tasks-api
   pullPolicy: IfNotPresent
-  tag: "16e01577a63c8fb1951a2d39cfc18c44f8a387a3"
+  tag: "4179f80e6d067b1b1d1cf2bc2a1285bbf149b8b8"
 
 service:
   type: ClusterIP
